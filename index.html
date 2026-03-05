@@ -1,40 +1,39 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="utf-8"/>
+<meta charset="UTF-8">
 <title>IFC Viewer</title>
 
-<script type="module">
-import { IfcViewerAPI } from "https://unpkg.com/web-ifc-viewer/dist/ifc-viewer-api.js";
+<style>
+body { margin: 0; overflow: hidden; }
+#viewer { width: 100vw; height: 100vh; }
+</style>
 
-let viewer;
+<!-- Three.js and WebIFC Viewer scripts from CDN -->
+<script src="https://unpkg.com/three@0.158.0/build/three.min.js"></script>
+<script src="https://unpkg.com/web-ifc-viewer@2.0.0/dist/IFCViewerAPI.umd.js"></script>
 
-window.onload = async () => {
+</head>
+<body>
+<div id="viewer"></div>
 
-const container = document.getElementById("viewer");
+<script>
+// Create the viewer
+const container = document.getElementById('viewer');
+const viewer = new window.IFCViewerAPI({ container });
 
-viewer = new IfcViewerAPI({ container });
-
+// Add grid and axes helpers
 viewer.grid.setGrid();
 viewer.axes.setAxes();
 
-viewer.IFC.setWasmPath("https://unpkg.com/web-ifc/");
+// Set WebAssembly path
+viewer.IFC.setWasmPath('https://unpkg.com/web-ifc/');
 
-viewer.IFC.loadIfcUrl("model.ifc");
-
-};
+// Load your IFC model
+viewer.IFC.loadIfcUrl('model.ifc').then(() => {
+    console.log('IFC model loaded successfully!');
+});
 </script>
-
-<style>
-body { margin:0; }
-#viewer { width:100vw; height:100vh; }
-</style>
-
-</head>
-
-<body>
-
-<div id="viewer"></div>
 
 </body>
 </html>
