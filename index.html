@@ -1,27 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <title>IFC Viewer</title>
 
 <style>
 body { margin:0; overflow:hidden; }
-#viewer { width:100vw; height:100vh; }
+canvas { display:block; }
 </style>
+
+<!-- Load Three.js globally -->
+<script src="https://unpkg.com/three@0.152.2/build/three.min.js"></script>
+
+<!-- Load IFC loader bundle -->
+<script src="https://unpkg.com/web-ifc-three@0.0.125/IFCLoader.js"></script>
 
 </head>
 
 <body>
 
-<div id="viewer"></div>
-
-<script type="module">
-
-import * as THREE from "https://unpkg.com/three@0.158.0/build/three.module.js";
-import { OrbitControls } from "https://unpkg.com/three@0.158.0/examples/jsm/controls/OrbitControls.js";
-import { IFCLoader } from "https://unpkg.com/web-ifc-three@0.0.126/IFCLoader.js";
-
-const container = document.getElementById("viewer");
+<script>
 
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0xffffff);
@@ -37,42 +35,44 @@ camera.position.set(8,13,15);
 
 const renderer = new THREE.WebGLRenderer({antialias:true});
 renderer.setSize(window.innerWidth, window.innerHeight);
-container.appendChild(renderer.domElement);
+document.body.appendChild(renderer.domElement);
 
-const controls = new OrbitControls(camera, renderer.domElement);
-
+// light
 const light = new THREE.DirectionalLight(0xffffff,1);
-light.position.set(10,20,0);
+light.position.set(10,20,10);
 scene.add(light);
 
-const ambient = new THREE.AmbientLight(0xffffff,0.5);
+const ambient = new THREE.AmbientLight(0xffffff,0.6);
 scene.add(ambient);
 
+// grid
 const grid = new THREE.GridHelper(50,50);
 scene.add(grid);
 
+// IFC loader
 const loader = new IFCLoader();
 loader.ifcManager.setWasmPath("https://unpkg.com/web-ifc@0.0.46/");
 
-loader.load("model.ifc", (model) => {
+loader.load("model.ifc", function(model){
 
 scene.add(model);
 
 });
 
 function animate(){
+
 requestAnimationFrame(animate);
-controls.update();
 renderer.render(scene,camera);
+
 }
 
 animate();
 
-window.addEventListener("resize",()=>{
+window.addEventListener("resize", ()=>{
 
 camera.aspect = window.innerWidth/window.innerHeight;
 camera.updateProjectionMatrix();
-renderer.setSize(window.innerWidth,window.innerHeight);
+renderer.setSize(window.innerWidth, window.innerHeight);
 
 });
 
