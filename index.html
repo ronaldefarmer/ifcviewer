@@ -9,7 +9,7 @@ body { margin: 0; overflow: hidden; }
 #viewer { width: 100vw; height: 100vh; }
 </style>
 
-<!-- Three.js and WebIFC Viewer scripts from CDN -->
+<!-- Load Three.js and WebIFC Viewer from CDN -->
 <script src="https://unpkg.com/three@0.158.0/build/three.min.js"></script>
 <script src="https://unpkg.com/web-ifc-viewer@2.0.0/dist/IFCViewerAPI.umd.js"></script>
 
@@ -26,7 +26,7 @@ const viewer = new window.IFCViewerAPI({ container });
 viewer.grid.setGrid();
 viewer.axes.setAxes();
 
-// Set WebAssembly path
+// Set WebAssembly path for WebIFC
 viewer.IFC.setWasmPath('https://unpkg.com/web-ifc/');
 
 // Load your IFC model
