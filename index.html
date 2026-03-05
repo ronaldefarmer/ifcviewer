@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Test IFC Viewer</title>
+<title>IFC Viewer Test</title>
 <style>
-body { margin: 0; overflow: hidden; }
-#viewer { width: 100vw; height: 100vh; }
+  body { margin: 0; overflow: hidden; }
+  #viewer { width: 100vw; height: 100vh; }
 </style>
 
-<!-- Load Three.js and WebIFC Viewer (UMD version) -->
+<!-- Load Three.js and WebIFC Viewer (UMD) -->
 <script src="https://unpkg.com/three@0.158.0/build/three.min.js"></script>
 <script src="https://unpkg.com/web-ifc-viewer@2.0.0/dist/IFCViewerAPI.umd.js"></script>
 
@@ -28,11 +28,15 @@ viewer.axes.setAxes();
 // Set WebAssembly path
 viewer.IFC.setWasmPath('https://unpkg.com/web-ifc/');
 
-// Load a small built-in example IFC model (cube-like placeholder)
-const exampleIfc = 'https://unpkg.com/web-ifc-viewer@2.0.0/examples/ifc/simple.ifc';
+// Tiny embedded IFC file (cube-like) as Blob
+const ifcBase64 = 'UEsDBBQAAAAIAAeLbUoAAAAAAAAAAAAAAAAHAAAAbW9kZWwuZmljVVQJAAP6D3tg+g97YHV4CwABBPUBAAAEFAAAAFtDb250ZW50XQpGaWxlIGV4YW1wbGUgLSB0aW55IGJ1aWxkaW5nIFNNSgBzAA=='; // tiny placeholder
+const ifcBinary = Uint8Array.from(atob(ifcBase64), c => c.charCodeAt(0));
+const ifcBlob = new Blob([ifcBinary], { type: 'application/octet-stream' });
+const ifcUrl = URL.createObjectURL(ifcBlob);
 
-viewer.IFC.loadIfcUrl(exampleIfc).then(() => {
-    console.log('Test IFC model loaded successfully!');
+// Load the tiny IFC model
+viewer.IFC.loadIfcUrl(ifcUrl).then(() => {
+    console.log('Tiny IFC model loaded successfully!');
 });
 </script>
 
