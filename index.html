@@ -9,18 +9,6 @@ body { margin:0; overflow:hidden; }
 #viewer { width:100vw; height:100vh; }
 </style>
 
-<script async src="https://unpkg.com/es-module-shims@1.10.0/dist/es-module-shims.js"></script>
-
-<script type="importmap">
-{
-  "imports": {
-    "three": "https://unpkg.com/three@0.156.1/build/three.module.js",
-    "three/examples/": "https://unpkg.com/three@0.156.1/examples/jsm/",
-    "web-ifc-three": "https://unpkg.com/web-ifc-three@0.0.126/"
-  }
-}
-</script>
-
 </head>
 
 <body>
@@ -29,9 +17,9 @@ body { margin:0; overflow:hidden; }
 
 <script type="module">
 
-import * as THREE from "three";
-import { OrbitControls } from "three/examples/controls/OrbitControls.js";
-import { IFCLoader } from "web-ifc-three/IFCLoader.js";
+import * as THREE from "https://unpkg.com/three@0.156.1/build/three.module.js";
+import { OrbitControls } from "https://unpkg.com/three@0.156.1/examples/jsm/controls/OrbitControls.js";
+import { IFCLoader } from "https://unpkg.com/web-ifc-three@0.0.126/IFCLoader.js";
 
 const container = document.getElementById("viewer");
 
@@ -53,12 +41,13 @@ container.appendChild(renderer.domElement);
 
 const controls = new OrbitControls(camera,renderer.domElement);
 
+scene.add(new THREE.GridHelper(50,50));
+
 const light = new THREE.DirectionalLight(0xffffff,1);
 light.position.set(10,20,10);
 scene.add(light);
 
-scene.add(new THREE.AmbientLight(0xffffff,0.6));
-scene.add(new THREE.GridHelper(50,50));
+scene.add(new THREE.AmbientLight(0xffffff,0.5));
 
 const loader = new IFCLoader();
 loader.ifcManager.setWasmPath("https://unpkg.com/web-ifc@0.0.46/");
@@ -74,6 +63,12 @@ function animate(){
 }
 
 animate();
+
+window.addEventListener("resize",()=>{
+camera.aspect = window.innerWidth/window.innerHeight;
+camera.updateProjectionMatrix();
+renderer.setSize(window.innerWidth,window.innerHeight);
+});
 
 </script>
 
