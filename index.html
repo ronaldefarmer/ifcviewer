@@ -9,6 +9,15 @@ body { margin:0; overflow:hidden; }
 #viewer { width:100vw; height:100vh; }
 </style>
 
+<!-- Import map to resolve "three" -->
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.156.1/build/three.module.js"
+  }
+}
+</script>
+
 </head>
 
 <body>
@@ -17,7 +26,7 @@ body { margin:0; overflow:hidden; }
 
 <script type="module">
 
-import * as THREE from "https://unpkg.com/three@0.156.1/build/three.module.js";
+import * as THREE from "three";
 import { OrbitControls } from "https://unpkg.com/three@0.156.1/examples/jsm/controls/OrbitControls.js";
 import { IFCLoader } from "https://unpkg.com/web-ifc-three@0.0.126/IFCLoader.js";
 
@@ -57,18 +66,12 @@ loader.load("model.ifc",(model)=>{
 });
 
 function animate(){
-    requestAnimationFrame(animate);
-    controls.update();
-    renderer.render(scene,camera);
+requestAnimationFrame(animate);
+controls.update();
+renderer.render(scene,camera);
 }
 
 animate();
-
-window.addEventListener("resize",()=>{
-camera.aspect = window.innerWidth/window.innerHeight;
-camera.updateProjectionMatrix();
-renderer.setSize(window.innerWidth,window.innerHeight);
-});
 
 </script>
 
